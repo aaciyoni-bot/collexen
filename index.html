@@ -1,285 +1,1121 @@
-<html lang="en" class="dark">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collexen | Premium Auctions</title>
-    
-    <!-- Fonts: Playfair Display for Serifs (Luxury), Inter for Sans (Readability) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- React & Tailwind -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        collexen: {
-                            black: '#0a0a0a',
-                            dark: '#141414',
-                            gray: '#27272a',
-                            gold: '#D4AF37', // Premium gold
-                            lightGold: '#F3E5AB'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #0a0a0a; color: #f4f4f5; }
-        /* Smooth scrolling for anchor links */
-        html { scroll-behavior: smooth; }
-        /* Hide scrollbar for category filter but keep functionality */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Glassmorphism for sticky headers */
-        .glass { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Collexen — International Fine Art & Collectibles Auctions</title>
+<meta name="description" content="Collexen is the modern marketplace for international auctions. Discover, follow and bid on fine art, watches, jewellery, Judaica and rare collectibles from the world's most respected auction houses." />
+<meta name="theme-color" content="#0b0b0d" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Collexen — International Fine Art & Collectibles Auctions" />
+<meta property="og:description" content="Discover, follow and bid on fine art and rare collectibles from the world's leading auction houses." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://collexen.com" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   COLLEXEN — Design System
+   ============================================================ */
+:root{
+  /* Neutrals (layered dark) */
+  --bg:            #0b0b0d;
+  --surface-1:     #141416;
+  --surface-2:     #1b1b1e;
+  --surface-3:     #232327;
+  --line:          rgba(255,255,255,.09);
+  --line-strong:   rgba(255,255,255,.16);
+
+  /* Text */
+  --text:          #f4f2ec;
+  --text-soft:     #c3c1ba;
+  --text-mute:     #8a887f;
+  --text-faint:    #63625b;
+
+  /* Accent — antique gold */
+  --gold:          #c8a962;
+  --gold-bright:   #e6cf94;
+  --gold-deep:     #a5822f;
+  --gold-grad:     linear-gradient(135deg,#e6cf94 0%,#c8a962 45%,#a5822f 100%);
+
+  /* Semantic */
+  --live:          #e0533a;
+  --live-glow:     rgba(224,83,58,.5);
+  --ok:            #6fbf8b;
+
+  /* Type */
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Radius */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-full: 999px;
+
+  /* Spacing scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+
+  --maxw: 1240px;
+  --shadow-lg: 0 30px 60px -20px rgba(0,0,0,.7);
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--gold);color:#1a1400}
+
+/* Focus */
+:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;border-radius:3px}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#33333a}
+
+/* ---------- Utilities ---------- */
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(20px,5vw,40px)}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);opacity:.6}
+.serif{font-family:var(--serif)}
+
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+.h-display{font-size:clamp(2.6rem,6.5vw,5.2rem)}
+.h-section{font-size:clamp(2rem,4.2vw,3.2rem)}
+.lede{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--text-soft);max-width:60ch;line-height:1.7}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-size:.9rem;font-weight:600;letter-spacing:.02em;
+  padding:14px 28px;border-radius:var(--r-full);
+  transition:transform .2s var(--ease),background .25s var(--ease),
+             color .25s var(--ease),box-shadow .25s var(--ease),border-color .25s;
+  white-space:nowrap;
+}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--gold-grad);color:#20180a;box-shadow:0 8px 24px -8px rgba(200,169,98,.6)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px -8px rgba(200,169,98,.75)}
+.btn-ghost{border:1px solid var(--line-strong);color:var(--text)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-bright);transform:translateY(-2px)}
+.btn-solid{background:var(--text);color:#111}
+.btn-solid:hover{background:#fff;transform:translateY(-2px)}
+.btn-sm{padding:10px 18px;font-size:.82rem}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold-bright);font-weight:600;font-size:.9rem;transition:gap .2s var(--ease)}
+.link-arrow:hover{gap:14px}
+.link-arrow svg{width:16px;height:16px}
+
+/* ============================================================
+   Announcement bar
+   ============================================================ */
+.announce{
+  background:linear-gradient(90deg,#100f0c,#181510,#100f0c);
+  border-bottom:1px solid var(--line);
+  font-size:.78rem;letter-spacing:.04em;color:var(--text-soft);
+  text-align:center;padding:9px 16px;
+}
+.announce b{color:var(--gold-bright);font-weight:600}
+
+/* ============================================================
+   Header
+   ============================================================ */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(11,11,13,.72);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,background .3s;
+}
+header.scrolled{border-bottom-color:var(--line);background:rgba(11,11,13,.9)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
+.logo{font-family:var(--serif);font-weight:600;font-size:1.5rem;letter-spacing:.16em;display:flex;align-items:center;gap:10px}
+.logo .mark{
+  width:30px;height:30px;border-radius:50%;background:var(--gold-grad);
+  display:grid;place-items:center;color:#1a1400;font-size:.95rem;font-weight:700;
+  font-family:var(--sans);letter-spacing:0;box-shadow:0 4px 14px -4px rgba(200,169,98,.7)
+}
+.nav-links{display:flex;align-items:center;gap:34px;list-style:none}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--text-soft);position:relative;padding:6px 0;transition:color .2s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--gold);transition:width .25s var(--ease)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:18px}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--text-soft);transition:.2s}
+.icon-btn:hover{color:var(--text);background:var(--surface-2)}
+.icon-btn svg{width:20px;height:20px}
+.nav-divider{width:1px;height:22px;background:var(--line-strong)}
+.signin{font-size:.9rem;font-weight:500;color:var(--text-soft);transition:color .2s}
+.signin:hover{color:var(--text)}
+.burger{display:none;flex-direction:column;gap:5px;width:44px;height:44px;align-items:center;justify-content:center}
+.burger span{width:22px;height:2px;background:var(--text);transition:.3s var(--ease)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;inset:0;top:0;z-index:99;background:rgba(11,11,13,.98);
+  backdrop-filter:blur(10px);display:flex;flex-direction:column;
+  padding:100px 32px 40px;gap:8px;
+  transform:translateX(100%);transition:transform .35s var(--ease);
+}
+.mobile-menu.open{transform:translateX(0)}
+.mobile-menu a{font-family:var(--serif);font-size:1.8rem;color:var(--text);padding:14px 0;border-bottom:1px solid var(--line)}
+.mobile-menu .m-actions{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{position:relative;overflow:hidden;padding:clamp(48px,7vw,96px) 0 clamp(56px,7vw,104px)}
+.hero-glow{
+  position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;max-width:760px;max-height:760px;
+  background:radial-gradient(circle,rgba(200,169,98,.16),transparent 62%);
+  filter:blur(20px);pointer-events:none;z-index:0;
+}
+.hero-grid{
+  position:relative;z-index:1;display:grid;
+  grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;
+}
+.hero-copy .eyebrow{margin-bottom:24px}
+.hero h1{margin-bottom:24px}
+.hero h1 em{font-style:italic;color:var(--gold-bright);font-weight:400}
+.hero .lede{margin-bottom:36px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:44px}
+.hero-stats{display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap}
+.hero-stats .stat .num{font-family:var(--serif);font-size:2rem;color:var(--text);line-height:1}
+.hero-stats .stat .lbl{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin-top:8px}
+
+/* Featured lot card */
+.feature-card{
+  position:relative;border-radius:var(--r-lg);overflow:hidden;
+  background:var(--surface-1);border:1px solid var(--line);box-shadow:var(--shadow-lg);
+}
+.feature-card .fc-img{position:relative;aspect-ratio:4/3.4;overflow:hidden}
+.feature-card .fc-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.feature-card:hover .fc-img img{transform:scale(1.05)}
+.fc-img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,11,13,.9),transparent 55%)}
+.live-badge{
+  position:absolute;top:16px;left:16px;z-index:2;display:inline-flex;align-items:center;gap:7px;
+  background:var(--live);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:7px 13px;border-radius:var(--r-full);
+  box-shadow:0 0 0 4px var(--live-glow),0 4px 12px rgba(0,0,0,.4);
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.fc-body{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:22px 24px}
+.fc-house{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-bright);font-weight:600;margin-bottom:8px}
+.fc-title{font-family:var(--serif);font-size:1.35rem;line-height:1.2;margin-bottom:16px}
+.fc-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.fc-bid .k{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-mute)}
+.fc-bid .v{font-family:var(--serif);font-size:1.5rem;color:var(--text)}
+.countdown{display:flex;gap:8px}
+.countdown .seg{background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 9px;text-align:center;min-width:44px;backdrop-filter:blur(4px)}
+.countdown .seg b{display:block;font-family:var(--serif);font-size:1.15rem;line-height:1;color:var(--gold-bright)}
+.countdown .seg span{font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-mute)}
+
+/* ============================================================
+   Trust strip / houses marquee
+   ============================================================ */
+.trust{border-block:1px solid var(--line);padding:28px 0;background:var(--surface-1)}
+.trust-head{text-align:center;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-mute);margin-bottom:22px}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee-track{display:flex;gap:64px;width:max-content;animation:scroll 34s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.house-name{font-family:var(--serif);font-size:1.45rem;color:var(--text-mute);white-space:nowrap;letter-spacing:.02em;transition:color .3s;font-weight:400}
+.house-name:hover{color:var(--text-soft)}
+
+/* ============================================================
+   Section shell
+   ============================================================ */
+section.block{padding:clamp(64px,9vw,128px) 0}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+.section-head .eyebrow{margin-bottom:16px}
+.section-head p.sub{color:var(--text-mute);margin-top:12px;max-width:52ch}
+
+/* Filter toolbar */
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.tabs{display:inline-flex;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-full);padding:5px}
+.tab{padding:9px 20px;border-radius:var(--r-full);font-size:.85rem;font-weight:600;color:var(--text-mute);transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.tab.active{background:var(--surface-3);color:var(--text)}
+.tab .dot{width:7px;height:7px;border-radius:50%;background:var(--live);box-shadow:0 0 0 3px var(--live-glow)}
+.chips{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:9px 18px;border-radius:var(--r-full);border:1px solid var(--line);font-size:.83rem;font-weight:500;color:var(--text-soft);white-space:nowrap;transition:.2s}
+.chip:hover{border-color:var(--line-strong);color:var(--text)}
+.chip.active{background:var(--text);color:#111;border-color:var(--text)}
+
+/* Lot grid */
+.lot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.lot{
+  display:flex;flex-direction:column;background:var(--surface-1);
+  border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+  transition:transform .3s var(--ease),border-color .3s,box-shadow .3s;
+}
+.lot:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 48px -24px rgba(0,0,0,.8)}
+.lot-img{position:relative;aspect-ratio:4/3.2;overflow:hidden;background:var(--surface-2)}
+.lot-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.lot:hover .lot-img img{transform:scale(1.06)}
+.lot-tag{position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:var(--r-full);font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(6px)}
+.lot-tag.live{background:var(--live);color:#fff;box-shadow:0 0 0 3px var(--live-glow)}
+.lot-tag.soon{background:rgba(11,11,13,.7);color:var(--text);border:1px solid var(--line-strong)}
+.watch{position:absolute;top:11px;right:11px;width:36px;height:36px;border-radius:50%;background:rgba(11,11,13,.55);backdrop-filter:blur(6px);display:grid;place-items:center;color:var(--text-soft);transition:.2s;border:1px solid transparent}
+.watch:hover{color:var(--live);border-color:var(--line)}
+.watch.on{color:var(--live)}
+.watch svg{width:18px;height:18px}
+.lot-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.lot-house{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:9px}
+.lot-title{font-family:var(--serif);font-size:1.12rem;line-height:1.3;margin-bottom:auto;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lot-info{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.lot-info .k{font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text-mute);margin-bottom:5px}
+.lot-info .est{font-size:.86rem;color:var(--text-soft)}
+.lot-info .bid{font-family:var(--serif);font-size:1.25rem;color:var(--text)}
+.lot-timer{margin-top:14px;display:flex;align-items:center;gap:7px;font-size:.78rem;color:var(--text-soft)}
+.lot-timer svg{width:15px;height:15px;color:var(--text-mute)}
+.lot-timer .t{font-variant-numeric:tabular-nums;font-weight:600}
+.lot-timer.urgent .t{color:var(--live)}
+.lot-btn{margin-top:16px;width:100%;padding:12px;border-radius:var(--r-full);font-size:.85rem;font-weight:600;transition:.2s var(--ease)}
+.lot-btn.primary{background:var(--gold-grad);color:#20180a}
+.lot-btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.lot-btn.secondary{border:1px solid var(--line-strong);color:var(--text)}
+.lot-btn.secondary:hover{border-color:var(--gold);color:var(--gold-bright)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-mute)}
+
+/* ============================================================
+   Departments
+   ============================================================ */
+.dept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.dept{position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:3/4;cursor:pointer;border:1px solid var(--line)}
+.dept img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);filter:grayscale(.15) brightness(.82)}
+.dept:hover img{transform:scale(1.08);filter:grayscale(0) brightness(.9)}
+.dept::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,11,13,.92),transparent 60%)}
+.dept-cap{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:22px 20px}
+.dept-cap h3{font-size:1.3rem;margin-bottom:4px}
+.dept-cap span{font-size:.78rem;color:var(--text-mute)}
+.dept-cap .go{display:inline-flex;align-items:center;gap:7px;color:var(--gold-bright);font-size:.8rem;font-weight:600;margin-top:10px;opacity:0;transform:translateY(6px);transition:.3s var(--ease)}
+.dept:hover .dept-cap .go{opacity:1;transform:translateY(0)}
+.dept-cap .go svg{width:15px;height:15px}
+.dept.large{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+
+/* ============================================================
+   How it works
+   ============================================================ */
+.how{background:var(--surface-1);border-block:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:12px}
+.step{padding:36px 32px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--bg);position:relative;transition:.3s var(--ease)}
+.step:hover{border-color:var(--line-strong);transform:translateY(-4px)}
+.step-num{font-family:var(--serif);font-size:3rem;color:transparent;-webkit-text-stroke:1px var(--gold);opacity:.7;line-height:1;margin-bottom:20px}
+.step-ico{width:52px;height:52px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--gold-bright);margin-bottom:20px}
+.step-ico svg{width:24px;height:24px}
+.step h3{font-size:1.35rem;margin-bottom:12px}
+.step p{color:var(--text-mute);font-size:.95rem}
+
+/* ============================================================
+   Stats band
+   ============================================================ */
+.stats-band{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stats-band .item{padding:24px 12px;border-inline-end:1px solid var(--line)}
+.stats-band .item:last-child{border:none}
+.stats-band .num{font-family:var(--serif);font-size:clamp(2.4rem,4vw,3.4rem);background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stats-band .lbl{margin-top:12px;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mute)}
+
+/* ============================================================
+   Sell CTA
+   ============================================================ */
+.sell{position:relative;overflow:hidden;border-radius:var(--r-lg);border:1px solid var(--line);
+  background:linear-gradient(120deg,var(--surface-2),var(--surface-1));padding:clamp(40px,6vw,80px)}
+.sell-glow{position:absolute;bottom:-40%;left:-10%;width:50vw;height:50vw;max-width:600px;max-height:600px;background:radial-gradient(circle,rgba(200,169,98,.14),transparent 65%);pointer-events:none}
+.sell-inner{position:relative;z-index:1;max-width:640px}
+.sell h2{margin:16px 0 18px}
+.sell p{color:var(--text-soft);margin-bottom:32px;font-size:1.08rem}
+
+/* Newsletter */
+.news{text-align:center;max-width:560px;margin-inline:auto}
+.news h2{margin:16px 0 14px}
+.news p{color:var(--text-mute);margin-bottom:28px}
+.news form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.news input{flex:1;min-width:240px;padding:14px 20px;border-radius:var(--r-full);background:var(--surface-1);border:1px solid var(--line-strong);color:var(--text);font-size:.95rem;font-family:inherit}
+.news input:focus{outline:none;border-color:var(--gold)}
+.news .note{margin-top:14px;font-size:.8rem;color:var(--text-faint)}
+.news .done{color:var(--ok);font-weight:600}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+footer{background:var(--surface-1);border-top:1px solid var(--line);padding:72px 0 32px;margin-top:0}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:52px}
+.foot-brand .logo{margin-bottom:18px}
+.foot-brand p{color:var(--text-mute);font-size:.92rem;max-width:38ch;margin-bottom:22px}
+.socials{display:flex;gap:12px}
+.socials a{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--text-soft);transition:.2s}
+.socials a:hover{border-color:var(--gold);color:var(--gold-bright);transform:translateY(-2px)}
+.socials svg{width:18px;height:18px}
+.foot-col h4{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:18px;font-family:var(--sans);font-weight:600}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.foot-col a{color:var(--text-mute);font-size:.9rem;transition:color .2s}
+.foot-col a:hover{color:var(--gold-bright)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot-bottom p{color:var(--text-faint);font-size:.82rem}
+.foot-bottom .legal{display:flex;gap:22px}
+.foot-bottom .legal a{color:var(--text-faint);font-size:.82rem;transition:color .2s}
+.foot-bottom .legal a:hover{color:var(--text-soft)}
+
+/* ============================================================
+   Modal
+   ============================================================ */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(5,5,7,.8);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:var(--surface-1);border:1px solid var(--line-strong);border-radius:var(--r-lg);
+  max-width:920px;width:100%;max-height:90vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;
+  box-shadow:var(--shadow-lg);transform:scale(.96) translateY(10px);transition:transform .3s var(--ease)}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-img{position:relative;background:var(--surface-2)}
+.modal-img img{width:100%;height:100%;object-fit:cover;min-height:340px}
+.modal-body{padding:36px;overflow-y:auto;display:flex;flex-direction:column}
+.modal-close{position:absolute;top:16px;right:16px;z-index:3;width:40px;height:40px;border-radius:50%;background:rgba(11,11,13,.6);backdrop-filter:blur(6px);display:grid;place-items:center;color:var(--text);transition:.2s}
+.modal-close:hover{background:var(--surface-3);transform:rotate(90deg)}
+.modal-close svg{width:20px;height:20px}
+.modal .m-house{color:var(--gold);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.modal .m-title{font-family:var(--serif);font-size:1.8rem;line-height:1.2;margin-bottom:8px}
+.modal .m-lot{color:var(--text-mute);font-size:.85rem;margin-bottom:22px}
+.m-rows{display:flex;flex-direction:column;gap:14px;padding:20px 0;border-block:1px solid var(--line);margin-bottom:22px}
+.m-row{display:flex;justify-content:space-between;align-items:center}
+.m-row .k{color:var(--text-mute);font-size:.88rem}
+.m-row .v{font-weight:600}
+.m-row .v.big{font-family:var(--serif);font-size:1.5rem;color:var(--gold-bright);font-weight:400}
+.m-bidbox{margin-top:auto}
+.m-bidbox label{display:block;font-size:.8rem;color:var(--text-mute);margin-bottom:8px}
+.m-inputrow{display:flex;gap:10px;margin-bottom:14px}
+.m-inputrow .pfx{display:flex;align-items:center;padding:0 16px;background:var(--surface-2);border:1px solid var(--line-strong);border-radius:var(--r-md);font-family:var(--serif);color:var(--gold-bright)}
+.m-inputrow input{flex:1;padding:14px 16px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line-strong);color:var(--text);font-size:1.05rem;font-family:inherit;font-variant-numeric:tabular-nums}
+.m-inputrow input:focus{outline:none;border-color:var(--gold)}
+.m-place{width:100%}
+.m-note{margin-top:14px;font-size:.78rem;color:var(--text-faint);text-align:center}
+.m-success{background:rgba(111,191,139,.1);border:1px solid rgba(111,191,139,.3);color:var(--ok);
+  padding:14px 16px;border-radius:var(--r-md);font-size:.9rem;font-weight:500;margin-top:14px;display:none;align-items:center;gap:10px}
+.m-success.show{display:flex}
+.m-success svg{width:20px;height:20px;flex-shrink:0}
+
+/* ============================================================
+   Reveal animation
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:48px}
+  .feature-card{max-width:520px}
+  .lot-grid{grid-template-columns:repeat(2,1fr)}
+  .dept-grid{grid-template-columns:repeat(2,1fr)}
+  .dept.large{grid-column:span 2;grid-row:auto;aspect-ratio:16/10}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .foot-brand{grid-column:1/-1}
+}
+@media(max-width:820px){
+  .nav-links,.nav-actions .desktop-only{display:none}
+  .burger{display:flex}
+  .steps{grid-template-columns:1fr}
+  .stats-band{grid-template-columns:repeat(2,1fr)}
+  .stats-band .item:nth-child(2){border:none}
+  .stats-band .item{border-bottom:1px solid var(--line);padding-bottom:24px}
+  .modal{grid-template-columns:1fr;max-height:92vh}
+  .modal-img img{min-height:220px;max-height:260px}
+}
+@media(max-width:560px){
+  .lot-grid{grid-template-columns:1fr}
+  .dept-grid{grid-template-columns:1fr}
+  .dept.large{aspect-ratio:3/4}
+  .hero-stats{gap:28px}
+  .toolbar{align-items:stretch}
+  .tabs{width:100%;justify-content:center}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+  .marquee-track{animation:none}
+}
+</style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        // --- Icons (Lucide via SVG) ---
-        const SearchIcon = () => <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
-        const FilterIcon = () => <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>;
-        const UserIcon = () => <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>;
-        const ClockIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+<!-- Announcement -->
+<div class="announce">
+  Autumn Season now open — <b>Modern Masters &amp; Fine Timepieces</b> live this week. Registration is complimentary.
+</div>
 
-        // --- Mock Data ---
-        const AUCTION_HOUSES = ["Tiroche", "Matsart", "Sotheby's Tel Aviv", "Zilbershlag Collection", "Kedem"];
-        
-        const LOTS = [
-            { id: 1, house: "Zilbershlag Collection", title: "Antique Silver Menorah, Warsaw 19th Century", estimate: "$15,000 - $20,000", currentBid: 12500, status: "live", category: "Judaica", image: "https://images.unsplash.com/photo-1601058268499-e52658b8ebf8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
-            { id: 2, house: "Tiroche", title: "Reuven Rubin, Olive Trees in Galilee, Oil on Canvas", estimate: "$80,000 - $120,000", currentBid: 75000, status: "upcoming", date: "Oct 15", category: "Fine Art", image: "https://images.unsplash.com/photo-1577720580479-7d839d829c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
-            { id: 3, house: "Matsart", title: "Rare Rolex Daytona 'Paul Newman' Ref. 6239", estimate: "$200,000 - $300,000", currentBid: 180000, status: "live", category: "Watches", image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
-            { id: 4, house: "Kedem", title: "First Edition Book of Zohar, Mantua 1558", estimate: "$40,000 - $60,000", currentBid: null, status: "upcoming", date: "Nov 2", category: "Rare Books", image: "https://images.unsplash.com/photo-1544396821-4dd40b938ad3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
-            { id: 5, house: "Sotheby's Tel Aviv", title: "Marc Chagall, Les Amoureux, Lithograph", estimate: "$5,000 - $7,000", currentBid: 4200, status: "live", category: "Fine Art", image: "https://images.unsplash.com/photo-1569171206894-01962da42d54?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
-            { id: 6, house: "Zilbershlag Collection", title: "Persian Silk Qum Rug, Signed, Mid 20th C.", estimate: "$8,000 - $12,000", currentBid: 6000, status: "upcoming", date: "Oct 20", category: "Carpets", image: "https://images.unsplash.com/photo-1600166898405-da9535204843?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" }
-        ];
+<!-- Header -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#" class="logo" aria-label="Collexen home">
+      <span class="mark">C</span>COLLEXEN
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#auctions">Auctions</a></li>
+        <li><a href="#departments">Departments</a></li>
+        <li><a href="#houses">Auction Houses</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#sell">Sell</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.2-5.2m2.2-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"/></svg>
+      </button>
+      <span class="nav-divider desktop-only"></span>
+      <a href="#" class="signin desktop-only">Sign in</a>
+      <a href="#" class="btn btn-primary btn-sm desktop-only">Register to bid</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
 
-        const CATEGORIES = ["All", "Fine Art", "Judaica", "Watches", "Jewelry", "Rare Books", "Carpets", "Asian Art"];
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#auctions">Auctions</a>
+  <a href="#departments">Departments</a>
+  <a href="#houses">Auction Houses</a>
+  <a href="#how">How it works</a>
+  <a href="#sell">Sell</a>
+  <div class="m-actions">
+    <a href="#" class="btn btn-ghost">Sign in</a>
+    <a href="#" class="btn btn-primary">Register to bid</a>
+  </div>
+</div>
 
-        // --- Components ---
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">International auctions · Live &amp; timed</span>
+      <h1 class="h-display">Where the world's<br/><em>rarest things</em><br/>find their keeper.</h1>
+      <p class="lede">Collexen brings the great auction houses onto one refined, modern platform. Follow the sales that matter, place bids in real time, and acquire with total confidence — from anywhere in the world.</p>
+      <div class="hero-cta">
+        <a href="#auctions" class="btn btn-primary">
+          Explore live auctions
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
+        </a>
+        <a href="#how" class="btn btn-ghost">How bidding works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">240+</div><div class="lbl">Auction houses</div></div>
+        <div class="stat"><div class="num">58</div><div class="lbl">Countries</div></div>
+        <div class="stat"><div class="num">$1.4B</div><div class="lbl">Sold to date</div></div>
+      </div>
+    </div>
 
-        const Navbar = () => (
-            <nav className="fixed top-0 w-full z-50 glass border-b border-gray-800 transition-all duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-20">
-                        {/* Logo */}
-                        <div className="flex-shrink-0 flex items-center cursor-pointer">
-                            <span className="font-serif font-bold text-2xl tracking-widest text-white">COLLEXEN</span>
-                        </div>
-                        
-                        {/* Desktop Menu */}
-                        <div className="hidden md:flex space-x-8 items-center">
-                            <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Auctions</a>
-                            <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Auction Houses</a>
-                            <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Sell</a>
-                        </div>
+    <!-- Featured live lot -->
+    <div class="feature-card reveal" id="featureCard">
+      <div class="fc-img">
+        <span class="live-badge"><span class="live-dot"></span>Live now</span>
+        <img src="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=900&q=80" alt="Rare stainless steel chronograph wristwatch" />
+      </div>
+      <div class="fc-body">
+        <div class="fc-house">Genève Horology · Lot 42</div>
+        <div class="fc-title">Patek Philippe Perpetual Calendar, Ref. 3940</div>
+        <div class="fc-meta">
+          <div class="fc-bid">
+            <div class="k">Current bid</div>
+            <div class="v" id="featureBid">$186,000</div>
+          </div>
+          <div class="countdown" id="featureCountdown" aria-label="Time remaining">
+            <div class="seg"><b data-h>00</b><span>hrs</span></div>
+            <div class="seg"><b data-m>00</b><span>min</span></div>
+            <div class="seg"><b data-s>00</b><span>sec</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                        {/* Search & Profile */}
-                        <div className="flex items-center space-x-6">
-                            <button className="text-gray-300 hover:text-white transition-colors"><SearchIcon /></button>
-                            <div className="h-6 w-px bg-gray-700"></div>
-                            <button className="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
-                                <UserIcon />
-                                <span className="text-sm hidden sm:block">Sign In</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        );
+<!-- Trust strip -->
+<div class="trust" id="houses">
+  <div class="wrap">
+    <p class="trust-head">Trusted by the world's most respected auction houses</p>
+    <div class="marquee">
+      <div class="marquee-track" id="houseTrack"></div>
+    </div>
+  </div>
+</div>
 
-        const Hero = () => (
-            <div className="relative pt-20 pb-32 flex content-center items-center justify-center min-h-[60vh]">
-                <div className="absolute top-0 w-full h-full bg-center bg-cover opacity-30" 
-                     style={{backgroundImage: "url('https://images.unsplash.com/photo-1582561424760-0321d6daa24f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"}}>
-                    <span id="blackOverlay" className="w-full h-full absolute opacity-70 bg-gradient-to-b from-transparent to-collexen-black"></span>
-                </div>
-                <div className="container relative mx-auto px-4 z-10 text-center">
-                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 tracking-wide">
-                        Discover the <span className="italic text-collexen-gold">Extraordinary</span>
-                    </h1>
-                    <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light">
-                        The premier platform connecting collectors with the world's most prestigious auction houses.
-                    </p>
-                    <div className="mt-10 flex justify-center gap-4">
-                        <button className="bg-white text-collexen-black px-8 py-3 font-semibold hover:bg-gray-200 transition-colors">
-                            Browse Live Auctions
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
+<!-- Auctions -->
+<section class="block" id="auctions">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">The saleroom</span>
+        <h2 class="h-section">Live &amp; upcoming lots</h2>
+        <p class="sub">Curated highlights from sales happening now and in the coming weeks. Register once, bid everywhere.</p>
+      </div>
+      <a href="#" class="link-arrow">View full calendar
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
+      </a>
+    </div>
 
-        const LotCard = ({ lot }) => (
-            <div className="group cursor-pointer flex flex-col h-full bg-collexen-dark border border-gray-800 hover:border-gray-600 transition-all duration-300">
-                {/* Image Container */}
-                <div className="relative aspect-[4/3] overflow-hidden bg-gray-900">
-                    <img src={lot.image} alt={lot.title} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100" />
-                    
-                    {/* Status Badge */}
-                    <div className="absolute top-3 left-3 flex gap-2">
-                        {lot.status === 'live' ? (
-                            <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-widest flex items-center gap-1 shadow-lg">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                                Live Now
-                            </span>
-                        ) : (
-                            <span className="bg-collexen-black text-white border border-gray-600 text-[10px] font-bold px-2 py-1 uppercase tracking-widest shadow-lg">
-                                {lot.date}
-                            </span>
-                        )}
-                    </div>
-                </div>
+    <div class="toolbar reveal">
+      <div class="tabs" id="statusTabs" role="tablist">
+        <button class="tab active" data-status="all" role="tab">All lots</button>
+        <button class="tab" data-status="live" role="tab"><span class="dot"></span>Live now</button>
+        <button class="tab" data-status="upcoming" role="tab">Upcoming</button>
+      </div>
+      <div class="chips" id="catChips"></div>
+    </div>
 
-                {/* Content */}
-                <div className="p-5 flex flex-col flex-grow">
-                    <p className="text-collexen-gold text-xs font-semibold uppercase tracking-wider mb-2">{lot.house}</p>
-                    <h3 className="text-white font-serif text-lg mb-3 leading-snug flex-grow">{lot.title}</h3>
-                    
-                    <div className="mt-auto pt-4 border-t border-gray-800">
-                        <div className="flex justify-between items-end mb-4">
-                            <div>
-                                <p className="text-gray-500 text-xs mb-1">Estimate</p>
-                                <p className="text-gray-300 text-sm">{lot.estimate}</p>
-                            </div>
-                            <div className="text-right">
-                                <p className="text-gray-500 text-xs mb-1">{lot.status === 'live' ? 'Current Bid' : 'Starting Bid'}</p>
-                                <p className="text-white font-medium">{lot.currentBid ? `$${lot.currentBid.toLocaleString()}` : '--'}</p>
-                            </div>
-                        </div>
-                        
-                        {/* Action Button */}
-                        <button className={`w-full py-2.5 text-sm font-medium transition-colors border ${lot.status === 'live' ? 'bg-white text-black border-white hover:bg-gray-200' : 'bg-transparent text-white border-gray-600 hover:border-white'}`}>
-                            {lot.status === 'live' ? 'Join Live Auction' : 'Register to Bid'}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
+    <div class="lot-grid" id="lotGrid"></div>
 
-        const Catalog = () => {
-            const [activeCategory, setActiveCategory] = React.useState("All");
+    <div style="text-align:center;margin-top:52px" class="reveal">
+      <button class="btn btn-ghost" id="loadMore">Load more lots</button>
+    </div>
+  </div>
+</section>
 
-            return (
-                <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                    
-                    {/* Filter/Search Bar (The alternative to Bidspirit's clunky search) */}
-                    <div className="sticky top-20 z-40 bg-collexen-black/95 py-4 mb-8 border-b border-gray-800">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                            
-                            {/* Categories Scroll */}
-                            <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
-                                <div className="flex space-x-6">
-                                    {CATEGORIES.map(cat => (
-                                        <button 
-                                            key={cat}
-                                            onClick={() => setActiveCategory(cat)}
-                                            className={`whitespace-nowrap text-sm pb-1 transition-colors ${activeCategory === cat ? 'text-collexen-gold border-b border-collexen-gold font-medium' : 'text-gray-400 hover:text-white'}`}
-                                        >
-                                            {cat}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+<!-- Departments -->
+<section class="block" id="departments" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Collecting categories</span>
+        <h2 class="h-section">Explore by department</h2>
+      </div>
+    </div>
+    <div class="dept-grid reveal">
+      <div class="dept large">
+        <img src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?auto=format&fit=crop&w=1000&q=80" alt="Fine art painting" />
+        <div class="dept-cap">
+          <h3>Fine Art</h3><span>1,240 lots · 68 sales</span>
+          <div class="go">Browse department <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div>
+        </div>
+      </div>
+      <div class="dept">
+        <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=700&q=80" alt="Luxury wristwatch" />
+        <div class="dept-cap"><h3>Watches</h3><span>410 lots</span>
+          <div class="go">Browse <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div></div>
+      </div>
+      <div class="dept">
+        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=700&q=80" alt="Diamond jewellery" />
+        <div class="dept-cap"><h3>Jewellery</h3><span>530 lots</span>
+          <div class="go">Browse <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div></div>
+      </div>
+      <div class="dept">
+        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80" alt="Rare antique books" />
+        <div class="dept-cap"><h3>Rare Books &amp; Judaica</h3><span>295 lots</span>
+          <div class="go">Browse <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div></div>
+      </div>
+      <div class="dept">
+        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=700&q=80" alt="Design furniture" />
+        <div class="dept-cap"><h3>Design</h3><span>180 lots</span>
+          <div class="go">Browse <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                            {/* Advanced Filters Button */}
-                            <button className="flex items-center space-x-2 text-sm text-gray-300 hover:text-white border border-gray-700 px-4 py-2 rounded-sm w-full md:w-auto justify-center">
-                                <FilterIcon />
-                                <span>Filter & Sort</span>
-                            </button>
-                        </div>
-                    </div>
+<!-- How it works -->
+<section class="block how" id="how">
+  <div class="wrap">
+    <div class="section-head reveal" style="justify-content:center;text-align:center">
+      <div style="max-width:640px">
+        <span class="eyebrow" style="justify-content:center">Simple by design</span>
+        <h2 class="h-section">Bid in three effortless steps</h2>
+        <p class="sub" style="margin-inline:auto">No paddles, no phone lines, no friction. The old world of auctions, reimagined for how collectors live today.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-ico">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        <h3>Register once</h3>
+        <p>Create a single verified account. Get approved to bid across every house on Collexen — no repeating paperwork for each sale.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-ico">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3>Bid in real time</h3>
+        <p>Follow the auctioneer live, set a maximum and let auto-bid work for you, or leave an absentee bid. Instant alerts when you're outbid.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-ico">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3>Win with confidence</h3>
+        <p>Secure escrow payments, insured worldwide shipping and provenance guaranteed. Your acquisition, handled end to end.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-                    {/* Section Title */}
-                    <div className="mb-8 flex justify-between items-end">
-                        <h2 className="text-3xl font-serif text-white">Curated Lots</h2>
-                        <a href="#" className="text-collexen-gold text-sm hover:underline">View All Upcoming</a>
-                    </div>
+<!-- Stats band -->
+<section class="block">
+  <div class="wrap">
+    <div class="stats-band reveal">
+      <div class="item"><div class="num">1.4M+</div><div class="lbl">Registered bidders</div></div>
+      <div class="item"><div class="num">98.6%</div><div class="lbl">Lots delivered on time</div></div>
+      <div class="item"><div class="num">24/7</div><div class="lbl">Global bidding</div></div>
+      <div class="item"><div class="num">A+</div><div class="lbl">Provenance rating</div></div>
+    </div>
+  </div>
+</section>
 
-                    {/* Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                        {LOTS.filter(lot => activeCategory === "All" || lot.category === activeCategory).map(lot => (
-                            <LotCard key={lot.id} lot={lot} />
-                        ))}
-                    </div>
-                    
-                    {/* Load More */}
-                    <div className="mt-16 text-center">
-                        <button className="border border-gray-600 text-white px-8 py-3 text-sm font-medium hover:bg-gray-800 transition-colors">
-                            Load More Lots
-                        </button>
-                    </div>
-                </section>
-            );
-        };
+<!-- Sell CTA -->
+<section class="block" id="sell" style="padding-top:0">
+  <div class="wrap">
+    <div class="sell reveal">
+      <div class="sell-glow"></div>
+      <div class="sell-inner">
+        <span class="eyebrow">Consign with Collexen</span>
+        <h2 class="h-section">Bring a collection to the world's finest buyers.</h2>
+        <p>Whether it's a single masterpiece or an entire estate, our specialists connect you with the right house and a global audience of serious collectors — with transparent terms and record-setting results.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <a href="#" class="btn btn-primary">Request a valuation
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
+          </a>
+          <a href="#" class="btn btn-ghost">Talk to a specialist</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        const Footer = () => (
-            <footer className="bg-collexen-dark border-t border-gray-800 pt-16 pb-8 mt-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                        <div className="col-span-1 md:col-span-2">
-                            <span className="font-serif font-bold text-2xl tracking-widest text-white mb-4 block">COLLEXEN</span>
-                            <p className="text-gray-400 text-sm max-w-sm mb-6">
-                                The next generation auction platform. Discover, bid, and acquire extraordinary items from the world's leading auction houses with unparalleled elegance and security.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 className="text-white font-medium mb-4 uppercase tracking-wider text-sm">Platform</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Live Auctions</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Auction Houses</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Private Sales</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Sell with Us</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="text-white font-medium mb-4 uppercase tracking-wider text-sm">Support</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">How to Bid</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">FAQ</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Contact</a></li>
-                                <li><a href="#" className="hover:text-collexen-gold transition-colors">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                        <p className="text-gray-500 text-xs">© 2024 Collexen. All rights reserved.</p>
-                        <div className="flex space-x-4 mt-4 md:mt-0 text-gray-500 text-xs">
-                            <span>Powered by next-gen auction technology.</span>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        );
+<!-- Newsletter -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="news reveal">
+      <span class="eyebrow" style="justify-content:center">The Collexen brief</span>
+      <h2 class="h-section">Never miss a masterpiece.</h2>
+      <p>Highlights from upcoming sales, market insights and early access to select lots — delivered weekly.</p>
+      <form id="newsForm">
+        <input type="email" placeholder="your@email.com" aria-label="Email address" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p class="note" id="newsNote">We respect your inbox. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
 
-        const App = () => (
-            <div className="min-h-screen">
-                <Navbar />
-                <Hero />
-                <Catalog />
-                <Footer />
-            </div>
-        );
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="logo"><span class="mark">C</span>COLLEXEN</a>
+        <p>The modern marketplace for international auctions. Discover, bid and acquire from the world's most respected houses — with elegance and total security.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="X"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8-9.2L1 2h7l4.8 6.3L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.4 8.65 22 10.6 22 14v7h-4v-6.2c0-1.48-.03-3.4-2.07-3.4-2.07 0-2.38 1.62-2.38 3.3V21H9z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="#auctions">Live auctions</a></li>
+          <li><a href="#departments">Departments</a></li>
+          <li><a href="#houses">Auction houses</a></li>
+          <li><a href="#">Sale calendar</a></li>
+          <li><a href="#">Private sales</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Collectors</h4>
+        <ul>
+          <li><a href="#how">How to bid</a></li>
+          <li><a href="#">Register</a></li>
+          <li><a href="#">Buyer's premium</a></li>
+          <li><a href="#">Shipping &amp; delivery</a></li>
+          <li><a href="#">Help centre</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#sell">Sell with us</a></li>
+          <li><a href="#">About Collexen</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© <span id="year"></span> Collexen. All rights reserved.</p>
+      <div class="legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms of service</a>
+        <a href="#">Conditions of sale</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+<!-- Bid modal -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-img">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <img id="modalImg" src="" alt="" />
+    </div>
+    <div class="modal-body">
+      <div class="m-house" id="modalHouse"></div>
+      <h3 class="m-title" id="modalTitle"></h3>
+      <div class="m-lot" id="modalLot"></div>
+      <div class="m-rows">
+        <div class="m-row"><span class="k">Estimate</span><span class="v" id="modalEst"></span></div>
+        <div class="m-row"><span class="k">Current bid</span><span class="v big" id="modalBid"></span></div>
+        <div class="m-row"><span class="k">Time remaining</span><span class="v" id="modalTime"></span></div>
+      </div>
+      <div class="m-bidbox">
+        <label for="bidInput" id="bidLabel">Your maximum bid</label>
+        <div class="m-inputrow">
+          <span class="pfx">$</span>
+          <input type="text" id="bidInput" inputmode="numeric" placeholder="0" />
+        </div>
+        <button class="btn btn-primary m-place" id="placeBid">Place bid</button>
+        <div class="m-success" id="bidSuccess">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span id="bidSuccessText"></span>
+        </div>
+        <p class="m-note">A 22% buyer's premium applies. This is a demo — no real transaction occurs.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Data
+   ============================================================ */
+const HOUSES = ["Genève Horology","Rothmann & Vale","Kestenbaum Fine Art","Montague London",
+  "Silberman Judaica","Aurora Modern","Kadmon Antiquities","Verdi & Sons","Halcyon Gallery","Meridian Design"];
+
+const CATEGORIES = ["All","Fine Art","Watches","Jewellery","Judaica","Rare Books","Design","Antiquities"];
+
+// hoursFromNow → live countdown target set at load time (never stale)
+const LOTS = [
+  {id:1, house:"Aurora Modern", cat:"Fine Art", title:"Reuven Rubin — Olive Trees in Galilee (Oil on canvas)", est:"$80,000 – $120,000", bid:96000, status:"live", hours:2.4,
+    img:"https://images.unsplash.com/photo-1578321272176-b7bbc0679853?auto=format&fit=crop&w=800&q=80"},
+  {id:2, house:"Genève Horology", cat:"Watches", title:"Rolex 'Paul Newman' Daytona, Ref. 6239", est:"$200,000 – $300,000", bid:246000, status:"live", hours:0.7,
+    img:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=800&q=80"},
+  {id:3, house:"Montague London", cat:"Jewellery", title:"Art Deco Emerald & Diamond Platinum Necklace", est:"$45,000 – $60,000", bid:38000, status:"live", hours:5.2,
+    img:"https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80"},
+  {id:4, house:"Silberman Judaica", cat:"Judaica", title:"Silver Hanukkah Menorah, Warsaw, 19th Century", est:"$15,000 – $20,000", bid:12500, status:"live", hours:8.5,
+    img:"https://images.unsplash.com/photo-1601058268499-e52658b8ebf8?auto=format&fit=crop&w=800&q=80"},
+  {id:5, house:"Kestenbaum Fine Art", cat:"Fine Art", title:"Marc Chagall — Les Amoureux (Lithograph, signed)", est:"$5,000 – $7,000", bid:5400, status:"live", hours:1.1,
+    img:"https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=800&q=80"},
+  {id:6, house:"Kadmon Antiquities", cat:"Antiquities", title:"Roman Marble Portrait Bust of a Senator, 1st C. AD", est:"$110,000 – $150,000", bid:104000, status:"live", hours:3.8,
+    img:"https://images.unsplash.com/photo-1608755728617-aef2521c8cc0?auto=format&fit=crop&w=800&q=80"},
+  {id:7, house:"Halcyon Gallery", cat:"Rare Books", title:"First Edition Book of Zohar, Mantua, 1558", est:"$40,000 – $60,000", bid:null, status:"upcoming", days:6,
+    img:"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"},
+  {id:8, house:"Meridian Design", cat:"Design", title:"Jean Prouvé 'Standard' Chair, Original Edition (Set of 4)", est:"$28,000 – $35,000", bid:null, status:"upcoming", days:9,
+    img:"https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80"},
+  {id:9, house:"Verdi & Sons", cat:"Watches", title:"Audemars Piguet Royal Oak 'Jumbo', Ref. 5402", est:"$90,000 – $130,000", bid:null, status:"upcoming", days:4,
+    img:"https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&w=800&q=80"},
+  {id:10, house:"Rothmann & Vale", cat:"Jewellery", title:"Cartier Panthère Brooch, Onyx & Emerald", est:"$60,000 – $85,000", bid:null, status:"upcoming", days:12,
+    img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=800&q=80"},
+  {id:11, house:"Aurora Modern", cat:"Fine Art", title:"Yayoi Kusama — Pumpkin (Screenprint in colours)", est:"$120,000 – $180,000", bid:null, status:"upcoming", days:2,
+    img:"https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=800&q=80"},
+  {id:12, house:"Kestenbaum Fine Art", cat:"Design", title:"Tiffany Studios 'Dragonfly' Leaded Glass Table Lamp", est:"$70,000 – $95,000", bid:null, status:"upcoming", days:7,
+    img:"https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80"},
+];
+
+/* ============================================================
+   Helpers
+   ============================================================ */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const now = Date.now();
+const money = n => "$"+n.toLocaleString("en-US");
+LOTS.forEach(l=>{ l.endsAt = l.status==="live" ? now + l.hours*3600*1000 : now + (l.days*24)*3600*1000; });
+
+function fmtRemaining(ms){
+  if(ms<=0) return {text:"Ended", urgent:false, ended:true};
+  const s=Math.floor(ms/1000);
+  const d=Math.floor(s/86400), h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60), sec=s%60;
+  if(d>0) return {text:`${d}d ${h}h`, urgent:false};
+  if(h>0) return {text:`${h}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`, urgent:h<1};
+  return {text:`${m}m ${String(sec).padStart(2,'0')}s`, urgent:true};
+}
+
+/* ============================================================
+   Houses marquee
+   ============================================================ */
+const track = $("#houseTrack");
+const doubled = [...HOUSES, ...HOUSES];
+track.innerHTML = doubled.map(h=>`<span class="house-name">${h}</span>`).join("");
+
+/* ============================================================
+   Category chips
+   ============================================================ */
+let activeCat = "All", activeStatus = "all", shown = 6;
+const chipWrap = $("#catChips");
+chipWrap.innerHTML = CATEGORIES.map((c,i)=>`<button class="chip${i===0?' active':''}" data-cat="${c}">${c}</button>`).join("");
+
+/* ============================================================
+   Render lots
+   ============================================================ */
+const grid = $("#lotGrid");
+const watched = new Set();
+
+function filtered(){
+  return LOTS.filter(l =>
+    (activeStatus==="all" || l.status===activeStatus) &&
+    (activeCat==="All" || l.cat===activeCat)
+  );
+}
+
+function lotHTML(l){
+  const rem = fmtRemaining(l.endsAt - Date.now());
+  const isLive = l.status==="live";
+  return `
+  <article class="lot" data-id="${l.id}">
+    <div class="lot-img">
+      <span class="lot-tag ${isLive?'live':'soon'}">${isLive?'<span class="live-dot"></span>Live now':'Upcoming'}</span>
+      <button class="watch${watched.has(l.id)?' on':''}" data-watch="${l.id}" aria-label="Add to watchlist">
+        <svg fill="${watched.has(l.id)?'currentColor':'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+      </button>
+      <img src="${l.img}" alt="${l.title}" loading="lazy" />
+    </div>
+    <div class="lot-body">
+      <div class="lot-house">${l.house}</div>
+      <h3 class="lot-title">${l.title}</h3>
+      <div class="lot-info">
+        <div><div class="k">Estimate</div><div class="est">${l.est}</div></div>
+        <div style="text-align:right"><div class="k">${isLive?'Current bid':'Opening'}</div><div class="bid">${l.bid?money(l.bid):'—'}</div></div>
+      </div>
+      <div class="lot-timer${rem.urgent?' urgent':''}" data-timer="${l.id}">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 2m5-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>${isLive?'Closes in':'Opens in'}</span> <span class="t">${rem.text}</span>
+      </div>
+      <button class="lot-btn ${isLive?'primary':'secondary'}" data-bid="${l.id}">
+        ${isLive?'Place bid':'Register interest'}
+      </button>
+    </div>
+  </article>`;
+}
+
+function render(){
+  const list = filtered();
+  const visible = list.slice(0, shown);
+  grid.innerHTML = visible.length
+    ? visible.map(lotHTML).join("")
+    : `<div class="empty">No lots match this selection yet. Try another category.</div>`;
+  $("#loadMore").style.display = list.length > shown ? "" : "none";
+  observeReveal();
+}
+
+/* ============================================================
+   Interactions
+   ============================================================ */
+// status tabs
+$$("#statusTabs .tab").forEach(t=>t.addEventListener("click",()=>{
+  $$("#statusTabs .tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active"); activeStatus=t.dataset.status; shown=6; render();
+}));
+// category chips
+chipWrap.addEventListener("click", e=>{
+  const b=e.target.closest(".chip"); if(!b) return;
+  $$(".chip",chipWrap).forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); activeCat=b.dataset.cat; shown=6; render();
+});
+// load more
+$("#loadMore").addEventListener("click",()=>{ shown+=6; render(); });
+// grid clicks (watch + bid + card)
+grid.addEventListener("click", e=>{
+  const w=e.target.closest("[data-watch]");
+  if(w){ const id=+w.dataset.watch; watched.has(id)?watched.delete(id):watched.add(id); render(); return; }
+  const b=e.target.closest("[data-bid]");
+  if(b){ openModal(+b.dataset.bid); return; }
+  const card=e.target.closest(".lot");
+  if(card) openModal(+card.dataset.id);
+});
+
+/* ============================================================
+   Modal
+   ============================================================ */
+const overlay=$("#modalOverlay");
+let currentLot=null, lastFocus=null;
+
+function openModal(id){
+  const l=LOTS.find(x=>x.id===id); if(!l) return;
+  currentLot=l; lastFocus=document.activeElement;
+  $("#modalImg").src=l.img; $("#modalImg").alt=l.title;
+  $("#modalHouse").textContent=l.house;
+  $("#modalTitle").textContent=l.title;
+  $("#modalLot").textContent=`Lot ${l.id} · ${l.cat}`;
+  $("#modalEst").textContent=l.est;
+  $("#modalBid").textContent=l.bid?money(l.bid):"No bids yet";
+  const rem=fmtRemaining(l.endsAt-Date.now());
+  $("#modalTime").textContent=(l.status==="live"?"Closes in ":"Opens in ")+rem.text;
+  const min=(l.bid||parseInt(l.est.replace(/[^0-9]/g,'').slice(0,6))||1000);
+  const next=l.bid?Math.round(l.bid*1.05/100)*100:min;
+  $("#bidLabel").textContent = l.status==="live" ? `Your maximum bid (next increment ${money(next)})` : "Your maximum bid";
+  $("#bidInput").value=next; $("#bidInput").placeholder=String(next);
+  $("#placeBid").textContent = l.status==="live" ? "Place bid" : "Register interest";
+  $("#bidSuccess").classList.remove("show");
+  overlay.classList.add("open"); overlay.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  setTimeout(()=>$("#modalClose").focus(),50);
+}
+function closeModal(){
+  overlay.classList.remove("open"); overlay.setAttribute("aria-hidden","true");
+  document.body.style.overflow=""; currentLot=null;
+  if(lastFocus) lastFocus.focus();
+}
+$("#modalClose").addEventListener("click",closeModal);
+overlay.addEventListener("click",e=>{ if(e.target===overlay) closeModal(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&overlay.classList.contains("open")) closeModal(); });
+
+// format bid input with thousands
+$("#bidInput").addEventListener("input",e=>{
+  const v=e.target.value.replace(/[^0-9]/g,'');
+  e.target.value=v?parseInt(v).toLocaleString("en-US"):"";
+});
+$("#placeBid").addEventListener("click",()=>{
+  if(!currentLot) return;
+  const val=parseInt($("#bidInput").value.replace(/[^0-9]/g,''))||0;
+  const s=$("#bidSuccess");
+  if(currentLot.status!=="live"){
+    $("#bidSuccessText").textContent="You're registered — we'll alert you the moment this lot opens.";
+    s.classList.add("show"); return;
+  }
+  if(val<=(currentLot.bid||0)){
+    $("#bidSuccessText").textContent="Bid must exceed the current bid. Try a higher amount.";
+    s.style.color="var(--live)"; s.style.borderColor="rgba(224,83,58,.3)"; s.style.background="rgba(224,83,58,.08)";
+    s.classList.add("show"); return;
+  }
+  currentLot.bid=val;
+  $("#modalBid").textContent=money(val);
+  $("#bidSuccessText").textContent=`Bid of ${money(val)} placed — you're the leading bidder.`;
+  s.style.color=""; s.style.borderColor=""; s.style.background="";
+  s.classList.add("show");
+  render();
+});
+
+/* ============================================================
+   Live countdowns + featured card
+   ============================================================ */
+const fEnd = now + 43*60*1000; // featured: ~43 min
+function tick(){
+  const t=Date.now();
+  // grid timers
+  $$("[data-timer]").forEach(el=>{
+    const id=+el.dataset.timer; const l=LOTS.find(x=>x.id===id); if(!l) return;
+    const rem=fmtRemaining(l.endsAt-t);
+    el.querySelector(".t").textContent=rem.text;
+    el.classList.toggle("urgent", !!rem.urgent);
+  });
+  // featured
+  const fr=fEnd-t, fs=Math.max(0,Math.floor(fr/1000));
+  const fc=$("#featureCountdown");
+  fc.querySelector("[data-h]").textContent=String(Math.floor(fs/3600)).padStart(2,'0');
+  fc.querySelector("[data-m]").textContent=String(Math.floor(fs%3600/60)).padStart(2,'0');
+  fc.querySelector("[data-s]").textContent=String(fs%60).padStart(2,'0');
+  // modal time
+  if(currentLot){
+    const rem=fmtRemaining(currentLot.endsAt-t);
+    $("#modalTime").textContent=(currentLot.status==="live"?"Closes in ":"Opens in ")+rem.text;
+  }
+}
+setInterval(tick,1000); tick();
+
+/* ============================================================
+   Simulated live bid activity (feels alive)
+   ============================================================ */
+setInterval(()=>{
+  const live=LOTS.filter(l=>l.status==="live"&&l.bid);
+  if(!live.length) return;
+  const l=live[Math.floor((Date.now()/7000)%live.length)];
+  l.bid=Math.round(l.bid*(1+ (0.01+ (Date.now()%40)/1000 ))/100)*100;
+  // update featured bid figure too
+  $("#featureBid").textContent = money(186000 + (Math.floor(Date.now()/8000)%14)*1000);
+  if(currentLot&&currentLot.id===l.id) $("#modalBid").textContent=money(l.bid);
+  render();
+}, 8000);
+
+/* ============================================================
+   Newsletter
+   ============================================================ */
+$("#newsForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const note=$("#newsNote");
+  note.textContent="Welcome aboard — check your inbox to confirm.";
+  note.classList.add("done");
+  e.target.reset();
+});
+
+/* ============================================================
+   Header scroll + mobile menu
+   ============================================================ */
+const header=$("#header");
+addEventListener("scroll",()=>header.classList.toggle("scrolled", scrollY>10));
+const burger=$("#burger"), mm=$("#mobileMenu");
+burger.addEventListener("click",()=>{
+  const open=mm.classList.toggle("open");
+  burger.classList.toggle("open",open);
+  burger.setAttribute("aria-expanded",open);
+  document.body.style.overflow=open?"hidden":"";
+});
+$$("#mobileMenu a").forEach(a=>a.addEventListener("click",()=>{
+  mm.classList.remove("open"); burger.classList.remove("open"); document.body.style.overflow="";
+}));
+
+/* ============================================================
+   Scroll reveal
+   ============================================================ */
+let io;
+function observeReveal(){
+  if(!io){
+    io=new IntersectionObserver((ents)=>{
+      ents.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);} });
+    },{threshold:.12, rootMargin:"0px 0px -40px 0px"});
+  }
+  $$(".reveal:not(.in)").forEach(el=>io.observe(el));
+}
+
+/* ============================================================
+   Init
+   ============================================================ */
+$("#year").textContent=new Date().getFullYear();
+render();
+observeReveal();
+</script>
 </body>
 </html>
